@@ -31,25 +31,25 @@ fi
 case $def_arch in 
     "arm")
         export RTT_CC=gcc
-        export RTT_EXEC_PATH=$(pwd)/tools/gnu_gcc/arm-linux-musleabi_for_x86_64-pc-linux-gnu/bin
+        export RTT_EXEC_PATH=$(pwd)/../gnu_gcc/arm-linux-musleabi_for_x86_64-pc-linux-gnu/bin
         export RTT_CC_PREFIX=arm-linux-musleabi-
         cp $SHELL_FOLDER/configs/def_config_arm $SHELL_FOLDER/.config
         ;;
     "aarch64")
         export RTT_CC=gcc
-        export RTT_EXEC_PATH=$(pwd)/tools/gnu_gcc/aarch64-linux-musleabi_for_x86_64-pc-linux-gnu/bin
+        export RTT_EXEC_PATH=$(pwd)/../gnu_gcc/aarch64-linux-musleabi_for_x86_64-pc-linux-gnu/bin
         export RTT_CC_PREFIX=aarch64-linux-musleabi-
         cp $SHELL_FOLDER/configs/def_config_aarch64 $SHELL_FOLDER/.config
         ;;
     "riscv64")
         export RTT_CC=gcc
-        export RTT_EXEC_PATH=$(pwd)/tools/gnu_gcc/riscv64-linux-musleabi_for_x86_64-pc-linux-gnu/bin
+        export RTT_EXEC_PATH=$(pwd)/../gnu_gcc/riscv64-linux-musleabi_for_x86_64-pc-linux-gnu/bin
         export RTT_CC_PREFIX=riscv64-unknown-linux-musl-
         cp $SHELL_FOLDER/configs/def_config_riscv64 $SHELL_FOLDER/.config
         ;;
     "i386")
         export RTT_CC=gcc
-        export RTT_EXEC_PATH=$(pwd)/tools/gnu_gcc/i386-linux-musleabi_for_x86_64-pc-linux-gnu/bin
+        export RTT_EXEC_PATH=$(pwd)/../gnu_gcc/i386-linux-musleabi_for_x86_64-pc-linux-gnu/bin
         export RTT_CC_PREFIX=i386-unknown-linux-musl-
         ;;
     *)  echo "unknown arch!"
