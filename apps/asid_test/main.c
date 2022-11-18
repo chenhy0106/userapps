@@ -12,12 +12,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <rtthread.h>
-#include <math.h>
 #include <unistd.h>
 
-void write_check_page(int value)
+int write_check_page(int value)
 {
-    int * pages = (int* )rt_malloc(1024 * sizeof(int)); // one page
+    int * pages = (int* )malloc(1024 * sizeof(int)); // one page
     for (unsigned i = 0; i < 1024; i++) 
     {
         pages[i] = value;
@@ -30,13 +29,12 @@ void write_check_page(int value)
         if (pages[i] != value) 
         {
             printf("[Fail] pid = %d, data = %d\n", value, pages[i]);
-            return;
+            return 1;
         }
     }
 
-    printf("%d pass\n", value);
-
-    rt_free(pages);
+    free(pages);
+    return 0;
 }
 
 int main(int argc, char **argv)
@@ -48,27 +46,40 @@ int main(int argc, char **argv)
     }
 
     int process_num = atoi(argv[1]);
-    int process_num_log = (int)log2(process_num);
-    int origin_pid = getpid();
+    int *child_pids = malloc(sizeof(int) * process_num);
+    int child_pids_ptr = 0;
 
-    for (int i = 0; i < process_num_log; i++)
+    for (int i = 0; i < process_num; i++)
     {
         int child_pid = fork();
         if (child_pid == 0)
         {// child
-            write_check_page(getpid());
+            int ret = write_check_page(getpid());
+            exit(ret);
         }
         else
         {
-            int status;
-            waitpid(child_pid, &status, 0);
-            write_check_page(getpid());
+            child_pids[child_pids_ptr++] = child_pid;
         }
     }
 
-    if (getpid() == origin_pid)
+    int status;
+    int err_flag = 0;
+    int child_pid;
+    for (int i = 0; i < child_pids_ptr; i++)
     {
-        printf("Succeed\n");
+        child_pid = child_pids[i];
+        waitpid(child_pid, &status, 0);
+        if (status)
+        {
+            printf("fail pid = %d\n", child_pid);
+            err_flag = 1;
+        }
+    }
+
+    if (!err_flag)
+    {
+        printf("pass\n");
     }
 
     return 0;
