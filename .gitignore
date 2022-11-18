@@ -22,3 +22,4 @@ build
 *.d
 GPUCache
 /tools/gnu_gcc
+.config
