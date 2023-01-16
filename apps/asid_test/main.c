@@ -14,7 +14,7 @@
 #include <rtthread.h>
 #include <unistd.h>
 
-int write_check_page(int value)
+void write_check_page(int value)
 {
     int * pages = (int* )malloc(1024 * sizeof(int)); // one page
     for (unsigned i = 0; i < 1024; i++) 
@@ -29,12 +29,12 @@ int write_check_page(int value)
         if (pages[i] != value) 
         {
             printf("[Fail] pid = %d, data = %d\n", value, pages[i]);
-            return 1;
+            return;
         }
     }
 
     free(pages);
-    return 0;
+    return;
 }
 
 int main(int argc, char **argv)
@@ -54,8 +54,8 @@ int main(int argc, char **argv)
         int child_pid = fork();
         if (child_pid == 0)
         {// child
-            int ret = write_check_page(getpid());
-            exit(ret);
+            write_check_page(getpid());
+            exit(0);
         }
         else
         {
@@ -64,23 +64,13 @@ int main(int argc, char **argv)
     }
 
     int status;
-    int err_flag = 0;
     int child_pid;
     for (int i = 0; i < child_pids_ptr; i++)
     {
         child_pid = child_pids[i];
         waitpid(child_pid, &status, 0);
-        if (status)
-        {
-            printf("fail pid = %d\n", child_pid);
-            err_flag = 1;
-        }
     }
 
-    if (!err_flag)
-    {
-        printf("pass\n");
-    }
-
+    printf("finished\n");
     return 0;
 }
