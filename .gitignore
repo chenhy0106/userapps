@@ -23,3 +23,5 @@ build
 GPUCache
 /tools/gnu_gcc
 .config
+test_dir
+*.so

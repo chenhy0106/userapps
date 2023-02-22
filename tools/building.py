@@ -130,7 +130,7 @@ def BuildEnv():
     BuildConfiguration()
 
     DefaultEnvironment(tools=[])
-    env = Environment(tools = ['gcc', 'g++', 'gnulink', 'ar'],
+    env = Environment(tools = ['gcc', 'g++', 'gnulink', 'ar', 'as'],
         AS   = ArchConfig.AS, ASFLAGS = ArchConfig.AFLAGS,
         CC   = ArchConfig.CC, CCFLAGS = ArchConfig.CFLAGS,
         CXX  = ArchConfig.CXX, CXXFLAGS = ArchConfig.CXXFLAGS,
